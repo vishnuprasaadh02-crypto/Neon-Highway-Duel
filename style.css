@@ -1,0 +1,303 @@
+@font-face {
+  font-family: 'Arcade';
+  src: local('Courier New');
+}
+
+:root {
+  --bg: #050914;
+  --bg-panel: #0a1330;
+  --road: #0d1730;
+  --lane-line: #3fd0ff;
+  --amber: #3fd0ff;
+  --p1: #4da6ff;
+  --p1-glow: rgba(77, 166, 255, 0.6);
+  --p2: #8a6bff;
+  --p2-glow: rgba(138, 107, 255, 0.6);
+  --obstacle: #ff9a3c;
+  --text: #eaf2ff;
+  --text-dim: #7f93c4;
+  --divider: #1c2a52;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  overflow: hidden;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* ---------- TOP BAR ---------- */
+
+#topbar {
+  position: relative;
+  flex: 0 0 auto;
+  padding: 10px 16px 8px;
+  background: radial-gradient(ellipse at 50% -20%, #0e1c46 0%, var(--bg-panel) 55%, var(--bg) 100%);
+  border-bottom: 1px solid var(--divider);
+  overflow: hidden;
+}
+
+.glow-rings {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 0;
+}
+.glow-rings span {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(63, 208, 255, 0.55);
+  box-shadow: 0 0 12px rgba(63, 208, 255, 0.25);
+  animation: ringPulse 3.6s ease-out infinite;
+}
+.glow-rings span:nth-child(2) { animation-delay: 1.2s; }
+.glow-rings span:nth-child(3) { animation-delay: 2.4s; }
+
+@keyframes ringPulse {
+  0%   { transform: scale(0.4); opacity: 0.85; }
+  100% { transform: scale(9); opacity: 0; }
+}
+
+#topbar h1 {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 8px;
+  font-size: clamp(14px, 3.2vw, 20px);
+  letter-spacing: 3px;
+  text-align: center;
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--p1), var(--amber) 50%, var(--p2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 26px rgba(63, 208, 255, 0.35);
+}
+
+#scoreboard {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.score {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: clamp(16px, 4vw, 22px);
+  font-weight: 700;
+  min-width: 64px;
+}
+.score.p1 { color: var(--p1); justify-content: flex-end; }
+.score.p2 { color: var(--p2); justify-content: flex-start; }
+.score .tag {
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  border: 1px solid currentColor;
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: inherit;
+  opacity: 0.75;
+}
+
+#timer {
+  font-size: clamp(13px, 3vw, 16px);
+  color: var(--text-dim);
+  min-width: 58px;
+  text-align: center;
+}
+
+/* ---------- STAGE ---------- */
+
+#stage {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: var(--bg);
+}
+
+#game {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ---------- OVERLAY ---------- */
+
+#overlay {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 7, 14, 0.86);
+  backdrop-filter: blur(2px);
+  padding: 16px;
+}
+#overlay.show { display: flex; }
+
+.panel {
+  max-width: 460px;
+  width: 100%;
+  background: var(--bg-panel);
+  border: 1px solid var(--divider);
+  border-radius: 10px;
+  padding: 22px 22px 18px;
+  text-align: center;
+  box-shadow: 0 0 44px rgba(63, 208, 255, 0.18);
+}
+
+.panel h2 {
+  margin: 0 0 8px;
+  font-size: clamp(18px, 5vw, 24px);
+  letter-spacing: 2px;
+  color: var(--amber);
+}
+
+.panel #overlay-sub {
+  margin: 0 0 18px;
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.controls-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.control-card {
+  border: 1px solid var(--divider);
+  border-radius: 8px;
+  padding: 10px 8px;
+}
+.control-card.p1 { border-color: var(--p1); }
+.control-card.p2 { border-color: var(--p2); }
+.control-card h3 {
+  margin: 0 0 6px;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+.control-card.p1 h3 { color: var(--p1); }
+.control-card.p2 h3 { color: var(--p2); }
+.control-card p {
+  margin: 3px 0;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+kbd {
+  background: #1e2140;
+  border: 1px solid #383c66;
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 1px 7px;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--text);
+}
+
+#start-btn {
+  appearance: none;
+  border: none;
+  border-radius: 8px;
+  padding: 13px 30px;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #04101f;
+  background: linear-gradient(90deg, var(--amber), #aef1ff);
+  cursor: pointer;
+  box-shadow: 0 4px 0 #1a7fa8, 0 0 26px rgba(63, 208, 255, 0.5);
+  transition: transform 0.05s ease;
+}
+#start-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 #1a7fa8; }
+
+.hint {
+  margin: 14px 0 0;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* ---------- TOUCH CONTROLS ---------- */
+
+#touch-controls {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 8px;
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+  background: var(--bg-panel);
+  border-top: 1px solid var(--divider);
+}
+
+.pad {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+}
+
+.pad-btn {
+  flex: 1;
+  appearance: none;
+  border: 1px solid var(--divider);
+  border-radius: 8px;
+  background: #171a30;
+  color: var(--text);
+  font-size: 22px;
+  padding: 14px 0;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.p1-pad .pad-btn { color: var(--p1); }
+.p2-pad .pad-btn { color: var(--p2); }
+.pad-btn:active { background: #21254a; }
+
+/* Hide touch pads on devices with a real keyboard (fine pointer), show on touch */
+@media (hover: hover) and (pointer: fine) {
+  #touch-controls { opacity: 0.55; }
+}
+
+/* ---------- FOOTER ---------- */
+
+#footer {
+  flex: 0 0 auto;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-dim);
+  padding: 4px 0 6px;
+  background: var(--bg);
+}
+
+@media (max-width: 480px) {
+  #footer { display: none; }
+  .controls-grid { gap: 8px; }
+}

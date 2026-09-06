@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Neon Highway Duel — 2 Player Race</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div id="app">
+
+    <header id="topbar">
+      <div class="glow-rings" aria-hidden="true"><span></span><span></span><span></span></div>
+      <h1>NEON HIGHWAY DUEL</h1>
+      <div id="scoreboard">
+        <div class="score p1">
+          <span class="tag">P1</span>
+          <span id="score-p1">0</span>
+        </div>
+        <div id="timer">00.0s</div>
+        <div class="score p2">
+          <span id="score-p2">0</span>
+          <span class="tag">P2</span>
+        </div>
+      </div>
+    </header>
+
+    <main id="stage">
+      <canvas id="game"></canvas>
+
+      <div id="overlay" class="show">
+        <div class="panel">
+          <h2 id="overlay-title">NEON HIGHWAY DUEL</h2>
+          <p id="overlay-sub">Two racers, one road each. Dodge the oncoming traffic — first driver to crash loses the duel.</p>
+
+          <div class="controls-grid">
+            <div class="control-card p1">
+              <h3>Player 1</h3>
+              <p><kbd>A</kbd> move left</p>
+              <p><kbd>D</kbd> move right</p>
+            </div>
+            <div class="control-card p2">
+              <h3>Player 2</h3>
+              <p><kbd>&larr;</kbd> move left</p>
+              <p><kbd>&rarr;</kbd> move right</p>
+            </div>
+          </div>
+
+          <button id="start-btn">START RACE</button>
+          <p class="hint">On phone/tablet? Use the on-screen arrows below the road.</p>
+        </div>
+      </div>
+    </main>
+
+    <section id="touch-controls" aria-hidden="false">
+      <div class="pad p1-pad">
+        <button class="pad-btn left" data-player="1" data-dir="-1" aria-label="Player 1 move left">&#9664;</button>
+        <button class="pad-btn right" data-player="1" data-dir="1" aria-label="Player 1 move right">&#9654;</button>
+      </div>
+      <div class="pad p2-pad">
+        <button class="pad-btn left" data-player="2" data-dir="-1" aria-label="Player 2 move left">&#9664;</button>
+        <button class="pad-btn right" data-player="2" data-dir="1" aria-label="Player 2 move right">&#9654;</button>
+      </div>
+    </section>
+
+    <footer id="footer">
+      <span>Built with vanilla JS &amp; canvas — no libraries, no build step.</span>
+    </footer>
+
+  </div>
+
+<script src="game.js"></script>
+</body>
+</html>
